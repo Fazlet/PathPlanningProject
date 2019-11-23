@@ -142,7 +142,7 @@ Linux test result:
 
 Windows test result:
 
-[![Build status](https://ci.appveyor.com/api/projects/status/fq0ucckb0yu60ayy/branch/master?svg=true)](hhttps://ci.appveyor.com/project/Fazlet/pathplanningproject/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/fq0ucckb0yu60ayy/branch/master?svg=true)](hhttps://ci.appveyor.com/project/Fazlet/pathplanningproject)
 
 При использовании сборки CMake возможен запуск тестов, как локально, так и с использованием Travis CI и AppVeyor. 
 Локальный запуск тестов производится из директории `.../PathPlanningProject/Build/{Debug|Release}/` с помощью команды:
