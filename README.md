@@ -1,38 +1,6 @@
 # PathPlanningProject
-Шаблон исходного кода для выполнения проекта по планированию траекторий.
 
 ![comics](./Images/comics.png)
-
-## Требования
-Для работы над проектом требуется иметь аккаут GitHub.
-
-Для сборки и запуска возможно использовать QMake или CMake. CMakeLists.txt и .pro файлы доступны в репозитории. Для проведения тестирования локально испольщуйте CMake. Подробные требования к ПО указаны ниже. 
-
-### Linux
-- Git 2.7.4 или выше
-- CMake 3.2 или выше;
-- GCC 4.9 или выше;
-- Make
-- QtCreator и Qt5 (по желанию).
-
-### Mac
-- Git 2.23.0 или выше
-- CMake 3.2 или выше;
-- Apple LLVM version 10.0.0 (clang-1000.11.45.5) или выше;
-- Make
-- QtCreator и Qt5 (по желанию).
-
-### Windows
-- Git 2.23.0 или выше
-- CMake 3.2 или выше;
-- MinGW-w64 5.0.3 или выше (должен быть добавлен в переменную среды Path);
-- QtCreator и Qt5 (по желанию).
-
-## Начало работы
-Cоздайте ответвление (fork) этого репозитория в свой GitHub аккаунт. Загрузите содержимое полученного репозитория, либо клонируйте его в нужную вам директорию.
-```bash
-git clone https://github.com/*account*/PathPlanningProject.git
-```
 
 ### Сборка и запуск
 
@@ -138,11 +106,11 @@ PathPlanning.exe ../../Examples/example.xml
 ## Тестирование 
 Linux test result:
 
-[![Build Status](https://travis-ci.com/haiot4105/PathPlanningProject.svg?branch=master)](https://travis-ci.com/haiot4105/PathPlanningProject)
+[![Build Status](https://travis-ci.org/Fazlet/PathPlanningProject.svg?branch=master)](https://travis-ci.com/Fazlet/PathPlanningProject)
 
 Windows test result:
 
-[![Build status](https://ci.appveyor.com/api/projects/status/c5fnkkk68kenwf1v/branch/master?svg=true)](https://ci.appveyor.com/project/haiot4105/pathplanningproject/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/fq0ucckb0yu60ayy/branch/master?svg=true)](https://ci.appveyor.com/project/Fazlet/pathplanningproject/branch/master)
 
 При использовании сборки CMake возможен запуск тестов, как локально, так и с использованием Travis CI и AppVeyor. 
 Локальный запуск тестов производится из директории `.../PathPlanningProject/Build/{Debug|Release}/` с помощью команды:
@@ -205,6 +173,10 @@ Errors while running CTest
 Для удаленного тестирования и получения "плашки" о проведении тестирования следует подключить сервисы TravisCI и AppVeyor к вашему репозиторию. Файлы `.travis.yml` и `.appveyor.yml` доступны в репозитории. После активации сервисов тестирование будет проводиться после каждого коммита в репозиторий GitHub. Подробная информация о тестировании будет доступна в личном кабинете соответствующего сервиса. [Подробнее об удаленном тестировании](https://habr.com/ru/post/329264/).
 
 ## Контакты
+**Фазлетдинов Эдуард**
+- ed.fazletdinov@gmail.com
+- Telegram: @fazlet
+
 **Яковлев Константин Сергеевич**
 - kyakovlev@hse.ru
 - [Сайт НИУ ВШЭ](https://www.hse.ru/staff/yakovlev-ks)
@@ -213,3 +185,4 @@ Errors while running CTest
 **Дергачев Степан**
 - sadergachev@edu.hse.ru
 - Telegram: @haiot4105
+
