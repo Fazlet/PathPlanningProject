@@ -52,7 +52,7 @@
     </options>
     <log>
         <mapfilename>../../Examples/example.xml</mapfilename>
-        <summary numberofsteps="255" nodescreated="459" length="0" length_scaled="0" time="0.000449"/>
+        <summary numberofsteps="255" nodescreated="459" length="1" length_scaled="24" time="0.000517"/>
         <path>
             <row number="0">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
@@ -61,7 +61,7 @@
             <row number="4">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="5">0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 </row>
             <row number="6">0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 </row>
-            <row number="7">0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 </row>
+            <row number="7">0 0 0 0 1 1 1 1 1 1 0 0 * 0 0 0 1 1 1 1 1 1 1 0 0 </row>
             <row number="8">0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 </row>
             <row number="9">0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 </row>
             <row number="10">0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 </row>
@@ -80,7 +80,9 @@
             <row number="23">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="24">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
         </path>
-        <lplevel/>
+        <lplevel>
+            <node x="12" y="7" number="0"/>
+        </lplevel>
         <hplevel/>
     </log>
 </root>

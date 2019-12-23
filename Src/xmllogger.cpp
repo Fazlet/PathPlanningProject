@@ -124,14 +124,13 @@ void XmlLogger::writeToLogMap(const Map &map, const std::list<Node> &path)
     }
 }
 
-/*void XmlLogger::writeToLogOpenClose(const typename &open, const typename &close)
+void XmlLogger::writeToLogOpenClose(const std::unordered_map<int, Node> &open, const std::unordered_map<int, Node> &close, bool last)
 {
     //need to implement
     if (loglevel != CN_LP_LEVEL_FULL_WORD  && !(loglevel == CN_LP_LEVEL_MEDIUM_WORD && last))
         return;
 
-
-}*/
+}
 
 void XmlLogger::writeToLogPath(const std::list<Node> &path)
 {

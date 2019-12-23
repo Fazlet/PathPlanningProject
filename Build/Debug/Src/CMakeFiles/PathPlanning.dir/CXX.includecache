@@ -97,25 +97,29 @@ xmllogger.h
 /home/eduard/PathPlanningProject/Src/node.h
 
 /home/eduard/PathPlanningProject/Src/search.cpp
+queue
+-
 search.h
 /home/eduard/PathPlanningProject/Src/search.h
 
 /home/eduard/PathPlanningProject/Src/search.h
-ilogger.h
-/home/eduard/PathPlanningProject/Src/ilogger.h
-searchresult.h
-/home/eduard/PathPlanningProject/Src/searchresult.h
+chrono
+-
 environmentoptions.h
 /home/eduard/PathPlanningProject/Src/environmentoptions.h
-list
--
-vector
--
+ilogger.h
+/home/eduard/PathPlanningProject/Src/ilogger.h
 math.h
 -
 limits
 -
-chrono
+list
+-
+searchresult.h
+/home/eduard/PathPlanningProject/Src/searchresult.h
+unordered_map
+-
+vector
 -
 
 /home/eduard/PathPlanningProject/Src/searchresult.h

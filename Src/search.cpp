@@ -24,12 +24,9 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
     OPEN.insert({currentNode.i + (currentNode.j * map.getMapHeight()), currentNode});
 
-    unsigned int nodesCreated = 1;
-    unsigned int numberOfSteps = 0;
     bool pathFound = false;
 
     while (!(OPEN.empty())) {
-        ++numberOfSteps;
         currentNode = findMin();
 
         CLOSE.insert({currentNode.i + (currentNode.j * map.getMapHeight()), currentNode});
@@ -45,7 +42,6 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
             if (OPEN.find(it->i + (it->j * map.getMapHeight())) == OPEN.end()) {
                 OPEN.insert({it->i + (it->j * map.getMapHeight()), *it});
-                ++nodesCreated;
             } else if (it->g < OPEN[it->i + (it->j * map.getMapHeight())].g) {
                 OPEN[it->i + (it->j * map.getMapHeight())].g = it->g;
                 OPEN[it->i + (it->j * map.getMapHeight())].parent = it->parent;
@@ -54,12 +50,17 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
     }
 
+    makePrimaryPath(currentNode);
+    sresult.pathlength = currentNode.g;
+
     finish = std::chrono::system_clock::now();
     sresult.time = static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count()) / 1000000000;
 
+    makeSecondaryPath();
+
     sresult.pathfound = pathFound;
-    sresult.nodescreated = nodesCreated;
-    sresult.numberofsteps = numberOfSteps;
+    sresult.nodescreated = CLOSE.size() + OPEN.size();
+    sresult.numberofsteps = CLOSE.size();
 
     sresult.hppath = &hppath; //Here is a constant pointer
     sresult.lppath = &lppath;
@@ -69,7 +70,24 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
 double Search::computeHeuristic(int a1, int b1, int a2, int b2, const EnvironmentOptions &options)
 {
-    double H = 0.0;
+    double H = 1.0;
+
+    if (options.metrictype == 0) {
+        double H = 1.0;
+    }
+
+    if (options.metrictype == 1) {
+        double H = 1.0;
+    }
+
+    if (options.metrictype == 2) {
+        double H = 1.0;
+    }
+
+    if (options.metrictype == 3) {
+        double H = 1.0;
+    }
+
     return H;
 }
 
@@ -140,6 +158,7 @@ Node Search::findMin()
 void Search::makePrimaryPath(Node currentNode)
 {
     Node thisNode = currentNode;
+
     while (thisNode.parent) {
         lppath.push_front(thisNode);
         thisNode = *(thisNode.parent);
@@ -149,5 +168,24 @@ void Search::makePrimaryPath(Node currentNode)
 
 void Search::makeSecondaryPath()
 {
+    auto it = lppath.begin();
+    int currentNode_i, currentNode_j, nextNode_i, nextNode_j;
+    hppath.push_back(*it);
 
+    while (it != --lppath.end()) {
+        currentNode_i = it->i;
+        currentNode_j = it->j;
+
+        ++it;
+        nextNode_i = it->i;
+        nextNode_j = it->j;
+
+        ++it;
+
+        if (((it->i - nextNode_i) != (nextNode_i - currentNode_i)) || ((it->j - nextNode_j) != (nextNode_j - currentNode_j))) {
+            hppath.push_back(*(--it));
+        } else {
+            --it;
+        }
+    }
 }
