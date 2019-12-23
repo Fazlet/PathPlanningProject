@@ -1,10 +1,10 @@
-Start testing: Nov 09 19:07 MSK
+Start testing: Nov 23 17:07 MSK
 ----------------------------------------------------------
 1/12 Testing: Test1
 1/12 Test: Test1
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/0_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test1" start time: Nov 09 19:07 MSK
+"Test1" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 tiny
@@ -14,10 +14,10 @@ Warning! Value of 'logfilename' tag is missing.
 Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
 Incorrect path legth
 <end of output>
-Test time =   0.06 sec
+Test time =   0.07 sec
 ----------------------------------------------------------
 Test Failed.
-"Test1" end time: Nov 09 19:07 MSK
+"Test1" end time: Nov 23 17:07 MSK
 "Test1" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -25,7 +25,7 @@ Test Failed.
 2/12 Test: Test2
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/1_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test2" start time: Nov 09 19:07 MSK
+"Test2" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 tiny
@@ -35,10 +35,10 @@ Warning! Value of 'logfilename' tag is missing.
 Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
 Incorrect path legth
 <end of output>
-Test time =   0.07 sec
+Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test2" end time: Nov 09 19:07 MSK
+"Test2" end time: Nov 23 17:07 MSK
 "Test2" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -46,7 +46,7 @@ Test Failed.
 3/12 Test: Test3
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/2_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test3" start time: Nov 09 19:07 MSK
+"Test3" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -61,7 +61,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test3" end time: Nov 09 19:07 MSK
+"Test3" end time: Nov 23 17:07 MSK
 "Test3" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -69,7 +69,7 @@ Test Failed.
 4/12 Test: Test4
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/3_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test4" start time: Nov 09 19:07 MSK
+"Test4" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -84,7 +84,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test4" end time: Nov 09 19:07 MSK
+"Test4" end time: Nov 23 17:07 MSK
 "Test4" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -92,7 +92,7 @@ Test Failed.
 5/12 Test: Test5
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/4_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test5" start time: Nov 09 19:07 MSK
+"Test5" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -107,7 +107,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test5" end time: Nov 09 19:07 MSK
+"Test5" end time: Nov 23 17:07 MSK
 "Test5" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -115,7 +115,30 @@ Test Failed.
 6/12 Test: Test6
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/5_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test6" start time: Nov 09 19:07 MSK
+"Test6" start time: Nov 23 17:07 MSK
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Failed.
+"Test6" end time: Nov 23 17:07 MSK
+"Test6" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/12 Testing: Test7
+7/12 Test: Test7
+Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/6_test.xml"
+Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
+"Test7" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -130,30 +153,7 @@ Incorrect path legth
 Test time =   0.07 sec
 ----------------------------------------------------------
 Test Failed.
-"Test6" end time: Nov 09 19:07 MSK
-"Test6" time elapsed: 00:00:00
-----------------------------------------------------------
-
-7/12 Testing: Test7
-7/12 Test: Test7
-Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/6_test.xml"
-Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test7" start time: Nov 09 19:07 MSK
-Output:
-----------------------------------------------------------
-Warning! Value of'metrictype' is not correctly specified.
-Value of 'metrictype' was defined to 'euclidean'
-tiny
-Warning! Value of 'logpath' tag is missing!
-Value of 'logpath' tag was defined to 'current directory'.
-Warning! Value of 'logfilename' tag is missing.
-Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
-Incorrect path legth
-<end of output>
-Test time =   0.06 sec
-----------------------------------------------------------
-Test Failed.
-"Test7" end time: Nov 09 19:07 MSK
+"Test7" end time: Nov 23 17:07 MSK
 "Test7" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -161,7 +161,7 @@ Test Failed.
 8/12 Test: Test8
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/7_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test8" start time: Nov 09 19:07 MSK
+"Test8" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -176,7 +176,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test8" end time: Nov 09 19:07 MSK
+"Test8" end time: Nov 23 17:07 MSK
 "Test8" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -184,7 +184,7 @@ Test Failed.
 9/12 Test: Test9
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/8_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test9" start time: Nov 09 19:07 MSK
+"Test9" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -199,7 +199,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test9" end time: Nov 09 19:07 MSK
+"Test9" end time: Nov 23 17:07 MSK
 "Test9" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -207,7 +207,7 @@ Test Failed.
 10/12 Test: Test10
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/9_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test10" start time: Nov 09 19:07 MSK
+"Test10" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 Warning! Value of'metrictype' is not correctly specified.
@@ -222,7 +222,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test10" end time: Nov 09 19:07 MSK
+"Test10" end time: Nov 23 17:07 MSK
 "Test10" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -230,7 +230,7 @@ Test Failed.
 11/12 Test: Test11
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/A_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test11" start time: Nov 09 19:07 MSK
+"Test11" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 tiny
@@ -243,7 +243,7 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test11" end time: Nov 09 19:07 MSK
+"Test11" end time: Nov 23 17:07 MSK
 "Test11" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -251,7 +251,7 @@ Test Failed.
 12/12 Test: Test12
 Command: "/home/eduard/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/B_test.xml"
 Directory: /home/eduard/PathPlanningProject/Build/Release/Tests
-"Test12" start time: Nov 09 19:07 MSK
+"Test12" start time: Nov 23 17:07 MSK
 Output:
 ----------------------------------------------------------
 tiny
@@ -264,8 +264,8 @@ Incorrect path legth
 Test time =   0.06 sec
 ----------------------------------------------------------
 Test Failed.
-"Test12" end time: Nov 09 19:07 MSK
+"Test12" end time: Nov 23 17:07 MSK
 "Test12" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Nov 09 19:07 MSK
+End testing: Nov 23 17:07 MSK
