@@ -51,7 +51,7 @@ class Search
         };
 
         SearchResult                                       sresult; //This will store the search result
-        std::list<Node>                                    lppath, hppath; //
+        std::list<Node>                                    lppath, hppath;
         std::unordered_map<int, Node>                      OPEN;
         std::unordered_map<int, Node>                      CLOSE;
         double                                             hweight;

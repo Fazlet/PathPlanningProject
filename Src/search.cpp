@@ -3,7 +3,7 @@
 
 Search::Search()
 {
-//set defaults here
+    hweight = 1;
 }
 
 Search::~Search() {}
@@ -25,10 +25,11 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     OPEN.insert({currentNode.i + (currentNode.j * map.getMapHeight()), currentNode});
 
     unsigned int nodesCreated = 1;
-
+    unsigned int numberOfSteps = 0;
     bool pathFound = false;
 
     while (!(OPEN.empty())) {
+        ++numberOfSteps;
         currentNode = findMin();
 
         CLOSE.insert({currentNode.i + (currentNode.j * map.getMapHeight()), currentNode});
@@ -50,6 +51,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 OPEN[it->i + (it->j * map.getMapHeight())].parent = it->parent;
             }
         }
+
     }
 
     finish = std::chrono::system_clock::now();
@@ -57,10 +59,10 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
     sresult.pathfound = pathFound;
     sresult.nodescreated = nodesCreated;
+    sresult.numberofsteps = numberOfSteps;
 
-    /*sresult.numberofsteps = ;
     sresult.hppath = &hppath; //Here is a constant pointer
-    sresult.lppath = &lppath;*/
+    sresult.lppath = &lppath;
 
     return sresult;
 }
@@ -74,9 +76,50 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
 std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const EnvironmentOptions &options)
 {
     std::list<Node> neighbors;
-    for (int i = -1; i < 2; ++i) {
-        for (int j = -1; j < 2; ++j) {
+    Node neighbor;
+    bool noWay = false;
 
+    for (int down = -1; down < 2; ++down) {
+        for (int right = -1; right < 2; ++right) {
+            if ((down != 0) || (right != 0)) {
+
+                if (map.CellOnGrid(currentNode.i + down, currentNode.j + right) &&
+                    map.CellIsTraversable(currentNode.i + down, currentNode.j + right)) {
+
+                    if ((down != 0) && (right != 0)) {
+                        if ((map.CellIsObstacle(currentNode.i + down, currentNode.j)) &&
+                            (map.CellIsObstacle(currentNode.i, currentNode.j + right)) &&
+                            (!(options.allowsqueeze))) {
+                            noWay = true;
+                        }
+
+                        if (!(options.allowdiagonal)) {
+                            noWay = true;
+                        }
+
+                        if (((map.CellIsObstacle(currentNode.i + down, currentNode.j)) ||
+                            (map.CellIsObstacle(currentNode.i, currentNode.j + right))) &&
+                            (!(options.cutcorners))) {
+                            noWay = true;
+                        }
+                    }
+
+                    if ((!(noWay)) &&
+                        (CLOSE.find((currentNode.i + down) + (map.getMapHeight() * (currentNode.j + right))) == CLOSE.end())) {
+                        neighbor.i = currentNode.i + down;
+                        neighbor.j = currentNode.j + right;
+                        if ((down != 0) && (right != 0)) {
+                            neighbor.g = sqrt(2);
+                        } else {
+                            neighbor.g = 1;
+                        }
+                        neighbor.H = computeHeuristic(neighbor.i, neighbor.j, map.getGoalI(), map.getGoalJ(), options);
+                        neighbor.F = neighbor.g + (hweight * neighbor.H);
+
+                        neighbors.push_front(neighbor);
+                    }
+                }
+            }
         }
     }
     return neighbors;
@@ -96,10 +139,15 @@ Node Search::findMin()
 
 void Search::makePrimaryPath(Node currentNode)
 {
-    //need to implement
+    Node thisNode = currentNode;
+    while (thisNode.parent) {
+        lppath.push_front(thisNode);
+        thisNode = *(thisNode.parent);
+    }
+    lppath.push_front(thisNode);
 }
 
 void Search::makeSecondaryPath()
 {
-    //need to implement
+
 }
