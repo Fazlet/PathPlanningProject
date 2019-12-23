@@ -72,7 +72,11 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
     double H = 0.0;
 
     if (options.metrictype == 0) {
-        H = sqrt((a1 - a2)*(a1 - a2) + (b1 - b2)*(b1 - b2));
+        if (abs(a1 - a2) < abs(b1 - b2)) {
+            H = (sqrt(2) * abs(a1 - a2)) + (abs(b1 - b2) - abs(a1 - a2));
+        } else {
+            H = (sqrt(2) * abs(b1 - b2)) + (abs(a1 - a2) - abs(b1 - b2));
+        }
     }
 
     if (options.metrictype == 1) {
