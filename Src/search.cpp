@@ -1,4 +1,3 @@
-#include <queue>
 #include "search.h"
 
 Search::Search()
@@ -10,12 +9,11 @@ Search::~Search() {}
 
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
-    //need to implement
-
     std::chrono::time_point<std::chrono::system_clock> start, finish;
     start = std::chrono::system_clock::now();
 
     Node currentNode;
+    currentNode.parent = nullptr;
     currentNode.i = map.getStartI();
     currentNode.j = map.getStartJ();
     currentNode.g = 0;
@@ -41,10 +39,11 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
         for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
             if (OPEN.find(it->i + (it->j * map.getMapHeight())) == OPEN.end()) {
+                it->parent = &(CLOSE.find(currentNode.i + (map.getMapHeight() * currentNode.j))->second);
                 OPEN.insert({it->i + (it->j * map.getMapHeight()), *it});
             } else if (it->g < OPEN[it->i + (it->j * map.getMapHeight())].g) {
                 OPEN[it->i + (it->j * map.getMapHeight())].g = it->g;
-                OPEN[it->i + (it->j * map.getMapHeight())].parent = it->parent;
+                OPEN[it->i + (it->j * map.getMapHeight())].parent = &(CLOSE.find(currentNode.i + (map.getMapHeight() * currentNode.j))->second);
             }
         }
 
@@ -62,7 +61,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     sresult.nodescreated = CLOSE.size() + OPEN.size();
     sresult.numberofsteps = CLOSE.size();
 
-    sresult.hppath = &hppath; //Here is a constant pointer
+    sresult.hppath = &hppath;
     sresult.lppath = &lppath;
 
     return sresult;
@@ -70,22 +69,26 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
 double Search::computeHeuristic(int a1, int b1, int a2, int b2, const EnvironmentOptions &options)
 {
-    double H = 1.0;
+    double H = 0.0;
 
     if (options.metrictype == 0) {
-        double H = 1.0;
+        H = sqrt((a1 - a2)*(a1 - a2) + (b1 - b2)*(b1 - b2));
     }
 
     if (options.metrictype == 1) {
-        double H = 1.0;
+        H = abs(a1 - a2) + abs(b1 - b2);
     }
 
     if (options.metrictype == 2) {
-        double H = 1.0;
+        H = sqrt((a1 - a2)*(a1 - a2) + (b1 - b2)*(b1 - b2));
     }
 
     if (options.metrictype == 3) {
-        double H = 1.0;
+        if (abs(a1 - a2) > abs(b1 - b2)) {
+            H = abs(a1 - a2);
+        } else {
+            H = abs(b1 - b2);
+        }
     }
 
     return H;
@@ -127,9 +130,9 @@ std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const Env
                         neighbor.i = currentNode.i + down;
                         neighbor.j = currentNode.j + right;
                         if ((down != 0) && (right != 0)) {
-                            neighbor.g = sqrt(2);
+                            neighbor.g = currentNode.g + sqrt(2);
                         } else {
-                            neighbor.g = 1;
+                            neighbor.g = currentNode.g + 1;
                         }
                         neighbor.H = computeHeuristic(neighbor.i, neighbor.j, map.getGoalI(), map.getGoalJ(), options);
                         neighbor.F = neighbor.g + (hweight * neighbor.H);

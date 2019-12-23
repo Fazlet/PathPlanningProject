@@ -93,8 +93,6 @@ xmllogger.h
 /home/eduard/PathPlanningProject/Src/node.h
 
 /home/eduard/PathPlanningProject/Src/search.cpp
-queue
--
 search.h
 /home/eduard/PathPlanningProject/Src/search.h
 

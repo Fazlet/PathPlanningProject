@@ -105,7 +105,7 @@ void XmlLogger::writeToLogMap(const Map &map, const std::list<Node> &path)
 
         for (int j = 0; j < map.getMapWidth(); ++j) {
             inPath = false;
-            for(std::list<Node>::const_iterator it = path.begin(); it != path.end(); it++)
+            for (auto it = path.begin(); it != path.end(); it++)
                 if(it->i == i && it->j == j) {
                     inPath = true;
                     break;
