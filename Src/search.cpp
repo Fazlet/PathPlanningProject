@@ -73,9 +73,9 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
 
     if (options.metrictype == 0) {
         if (abs(a1 - a2) < abs(b1 - b2)) {
-            H = (sqrt(2) * abs(a1 - a2)) + (abs(b1 - b2) - abs(a1 - a2));
+            H = (1.41421356237 * abs(a1 - a2)) + (abs(b1 - b2) - abs(a1 - a2));
         } else {
-            H = (sqrt(2) * abs(b1 - b2)) + (abs(a1 - a2) - abs(b1 - b2));
+            H = (1.41421356237 * abs(b1 - b2)) + (abs(a1 - a2) - abs(b1 - b2));
         }
     }
 
@@ -134,7 +134,7 @@ std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const Env
                         neighbor.i = currentNode.i + down;
                         neighbor.j = currentNode.j + right;
                         if ((down != 0) && (right != 0)) {
-                            neighbor.g = currentNode.g + sqrt(2);
+                            neighbor.g = currentNode.g + 1.41421356237;
                         } else {
                             neighbor.g = currentNode.g + 1;
                         }
