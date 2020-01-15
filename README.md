@@ -1,51 +1,64 @@
 # PathPlanningProject
 
-![comics](./Images/comics.png)
+Программный проект "Path Planning" или "Нахождение кратчайших путей".
+
+Представляет собой алгоритмы AStar и Dijkstra поиска пути на двумерной карте-сетке.
+
+### Входные данные
+
+Первым аргументом на вход программе подаётся xml-файл. В нём содержится: 
+- Карта
+- Координаты начальной и конечной точек
+- Опции алгоритма
+- Уровни логирования
+
+##### Теги входного xml-файла:
+**\<root>** - глобальный тег
+
+**\<map>** - обязательный тег, описывающий карту:
+- **\<width>** и **\<height>** - ширина и высота карты
+- **\<сellsize>** - масштаб карты (размер одной ячейки)
+- **\<startx>** и **\<starty>** - координаты начальной точки
+- **\<finishx>** и **\<finishy>** - координаты конечной точки
+- **\<grid>** - тег, описывающий квадратную сетку карты; состоит из тегов **\<row>** - описания строки сетки, состоящего из 0 (свободных ячеек) и 1 (препятствий)
+
+**\<algorithm>** - обязательный тег, описывающий опции алгоритма:
+- **\<searchtype>** - тип алгоритма поиска (AStar или Dijkstra)
+- **\<metrictype>** - тип метрики пространства (diagonal, manhattan, euclidean or chebyshev)
+- **\<hweight>** - вес эвристичиеской функции
+- **\<breakingties>** - тип сравнения вершин при равнестве F-значений (g-max или g-min)
+- **\<allowdiagonal>** - возможность "ходить" по диагонали
+- **\<cutcorners>** - возможность "срезать" углы
+- **\<allowsqueeze>** -  возможность "ходить" по диагонали между двумя препятствиями
+
+**\<options>** - необязательный тег, описывающий логирование:
+- **\<loglevel>** - уровень логирования: 
+"0" - без создания лог-файла; "0.5" - краткая информация (длина пути, количество шагов алгоритма, время работы); "1" - всё предыдущее и последовательность вершин, образующих путь, последовательность секций пути; "1.5" - всё предыдущее и информация о множествах вершин OPEN и CLOSE в конце работы алгоритма; "2" - всё предыдущее и и информация о множествах вершин OPEN и CLOSE после каждого шага работы алгоритма.
+- **\<logpath>** - путь сохранения xml-файла с результатом
+- **\<logfilename>** - имя xml-файла с результатом
+
+### Выходные данные 
+После работы программы получаем xml-файл с результатами. Он содержит в себе все теги из входного файла, а также:
+- **\<mapfilename>** - имя лог-файла (?)
+- **\<summary>** - информация о результате работы алгоритма (длина пути, количество шагов алгоритма, время работы)
+- **\<path>** - карта с изображением пути из начальной точки до конечной (если он найден)
+- **\<hplevel>** - последовательность секций пути
+- **\<lplevel>** - последовательность вершин, образующих путь.
 
 ### Сборка и запуск
 
 Сборку проекта возможно осуществить двумя способами:
-- Используя QtCreator и qmake;
-- Используя CMake.
-  
-При использовании QtCreator требуется открыть файл `ASearch.pro` который находится в директории `.../PathPlanningProject/Src/` и настроить проект с нужным комплектом сборки.
+- Используя QtCreator и qmake; 
+- Используя CMake. 
 
-![qt_open](./Images/qt1.png)
+В качестве первого аргумента командной строки нужно подать входной xml-файл (описан выше).
 
-После выбора проекта требуется установить имя входного файла как аргумент командной строки. В качестве первого примера используйте файл `.../PathPlanningProject/Examples/example.xml`. Для установки аргументов командной строки перейдите в настройки запуска проекта и введите нужный путь к файлу в поле "Параметры командной строки".
-![qt_arg](./Images/qt2.png)
+После запуска краткий лог работы можно увидеть в консоли. Также будет создан xml-файл с подробным результатом. 
 
-После установки аргумента командной строки можно проверить работу программы. Следующий результат должен отобразиться в результате запуска:
-
-```
-Parsing the map from XML:
-Map OK!
-Parsing configurations (algorithm, log) from XML:
-short
-Warning! Value of 'logpath' tag is missing!
-Value of 'logpath' tag was defined to 'current directory'.
-Warning! Value of 'logfilename' tag is missing.
-Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
-Configurations OK!
-Creating log channel:
-Log OK!
-Start searching the path:
-Search is finished!
-Path NOT found!
-numberofsteps=0
-nodescreated=0
-time=0
-Results are saved (if chosen) via created log channel.
-```
-
-При использовании CMake сборка и запуск может производиться как из командной строки, так и при помощи различных IDE (например JetBrains CLion). Ниже приведены скрипты сборки и запуска с использованием командной строки.
-
-### Linux и Mac
+#### Linux и Mac
 Release сборка:
 ```bash
-cd PathPlanningProject
-cd Build
-cd Release
+cd PathPlanningProject/Build/Release
 cmake ../../ -DCMAKE_BUILD_TYPE="Release"
 make
 make install
@@ -53,9 +66,7 @@ make install
 
 Debug сборка:
 ```bash
-cd PathPlanningProject
-cd Build
-cd Debug
+cd PathPlanningProject/Build/Debug
 cmake ../../ -DCMAKE_BUILD_TYPE="Debug"
 make
 make install
@@ -63,19 +74,14 @@ make install
 
 Запуск:
 ```bash
-cd ../../Bin/{Debug|Release}/
+cd PathPlanningProject/Bin/{Debug|Release}
 ./PathPlanning ../../Examples/example.xml
 ```
-Результат запуска:
 
-![cmake_run](./Images/cmake1.png)
-
-### Windows
+#### Windows
 Release сборка:
 ```cmd
-cd PathPlanningProject
-cd Build
-cd Release
+cd PathPlanningProject/Build/Release
 set PATH
 cmake ../../ -DCMAKE_BUILD_TYPE="Release" -G "MinGW Makefiles"
 mingw32-make
@@ -84,9 +90,7 @@ mingw32-make install
 
 Debug сборка:
 ```cmd
-cd PathPlanningProject
-cd Build
-cd Debug
+cd PathPlanningProject/Build/Debug
 set PATH
 cmake ../../ -DCMAKE_BUILD_TYPE="Debug" -G "MinGW Makefiles"
 mingw32-make
@@ -95,14 +99,11 @@ mingw32-make install
 
 Запуск:
 ```cmd
-cd ../../Bin/{Debug|Release}/
+cd PathPlanningProject/Bin/{Debug|Release}
 PathPlanning.exe ../../Examples/example.xml
 ```
 
-Результат запуска:
-![cmake_run2](./Images/cmake.png)
-
-## Тестирование 
+### Тестирование 
 Linux test result:
 
 [![Build Status](https://travis-ci.org/Fazlet/PathPlanningProject.svg?branch=master)](https://travis-ci.com/Fazlet/PathPlanningProject)
@@ -110,8 +111,7 @@ Linux test result:
 Windows test result:
 
 [![Build status](https://ci.appveyor.com/api/projects/status/fq0ucckb0yu60ayy/branch/master?svg=true)](https://ci.appveyor.com/project/Fazlet/pathplanningproject/branch/master)
-
-При использовании сборки CMake возможен запуск тестов, как локально, так и с использованием Travis CI и AppVeyor. 
+ 
 Локальный запуск тестов производится из директории `.../PathPlanningProject/Build/{Debug|Release}/` с помощью команды:
 ```
  ctest
@@ -121,67 +121,8 @@ Windows test result:
 ```
  ctest --output-on-failure
 ```
-При попытке запуска тестов c использованием пустого шаблона должен получиться следующий результат:
-```
-      Start  1: Test1
- 1/12 Test  #1: Test1 ............................***Failed    0.07 sec
-      Start  2: Test2
- 2/12 Test  #2: Test2 ............................***Failed    0.07 sec
-      Start  3: Test3
- 3/12 Test  #3: Test3 ............................***Failed    0.06 sec
-      Start  4: Test4
- 4/12 Test  #4: Test4 ............................***Failed    0.07 sec
-      Start  5: Test5
- 5/12 Test  #5: Test5 ............................***Failed    0.07 sec
-      Start  6: Test6
- 6/12 Test  #6: Test6 ............................***Failed    0.06 sec
-      Start  7: Test7
- 7/12 Test  #7: Test7 ............................***Failed    0.06 sec
-      Start  8: Test8
- 8/12 Test  #8: Test8 ............................***Failed    0.06 sec
-      Start  9: Test9
- 9/12 Test  #9: Test9 ............................***Failed    0.06 sec
-      Start 10: Test10
-10/12 Test #10: Test10 ...........................***Failed    0.07 sec
-      Start 11: Test11
-11/12 Test #11: Test11 ...........................***Failed    0.06 sec
-      Start 12: Test12
-12/12 Test #12: Test12 ...........................***Failed    0.06 sec
 
-0% tests passed, 12 tests failed out of 12
-
-Total Test time (real) =   0.80 sec
-
-The following tests FAILED:
-	  1 - Test1 (Failed)
-	  2 - Test2 (Failed)
-	  3 - Test3 (Failed)
-	  4 - Test4 (Failed)
-	  5 - Test5 (Failed)
-	  6 - Test6 (Failed)
-	  7 - Test7 (Failed)
-	  8 - Test8 (Failed)
-	  9 - Test9 (Failed)
-	 10 - Test10 (Failed)
-	 11 - Test11 (Failed)
-	 12 - Test12 (Failed)
-Errors while running CTest
-```
-Для корректного тестирования поддерживайте файлы CMakeLists.txt в актуальном состоянии даже при использовании QtCreator.
-
-Для удаленного тестирования и получения "плашки" о проведении тестирования следует подключить сервисы TravisCI и AppVeyor к вашему репозиторию. Файлы `.travis.yml` и `.appveyor.yml` доступны в репозитории. После активации сервисов тестирование будет проводиться после каждого коммита в репозиторий GitHub. Подробная информация о тестировании будет доступна в личном кабинете соответствующего сервиса. [Подробнее об удаленном тестировании](https://habr.com/ru/post/329264/).
-
-## Контакты
+### Контакты
 **Фазлетдинов Эдуард**
 - ed.fazletdinov@gmail.com
 - Telegram: @fazlet
-
-**Яковлев Константин Сергеевич**
-- kyakovlev@hse.ru
-- [Сайт НИУ ВШЭ](https://www.hse.ru/staff/yakovlev-ks)
-- Telegram: @KonstantinYakovlev
-  
-**Дергачев Степан**
-- sadergachev@edu.hse.ru
-- Telegram: @haiot4105
-
