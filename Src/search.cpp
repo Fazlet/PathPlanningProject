@@ -52,13 +52,17 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
 
     }
 
-    sresult.pathlength = currentNode.g;
-    makePrimaryPath(currentNode);
+    if (pathFound) {
+        sresult.pathlength = currentNode.g;
+        makePrimaryPath(currentNode);
+    }
 
     finish = std::chrono::system_clock::now();
     sresult.time = static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count()) / 1000000000;
 
-    makeSecondaryPath();
+    if (pathFound) {
+        makeSecondaryPath();
+    }
 
     sresult.pathfound = pathFound;
     sresult.nodescreated = CLOSE.size() + OPEN.size();
