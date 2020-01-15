@@ -38,11 +38,19 @@ bool Mission::createLog()
 
 void Mission::createEnvironmentOptions()
 {
+    options.searchtype = config.SearchParams[CN_SP_ST];
     options.cutcorners = config.SearchParams[CN_SP_CC];
     options.allowsqueeze = config.SearchParams[CN_SP_AS];
     options.allowdiagonal = config.SearchParams[CN_SP_AD];
-    options.metrictype = config.SearchParams[CN_SP_MT];
-
+    if (config.N == 7) {
+        options.metrictype = config.SearchParams[CN_SP_MT];
+        options.hweight = config.SearchParams[CN_SP_HW];
+        options.breakingties = config.SearchParams[CN_SP_BT];
+    } else {
+        options.metrictype = CN_SP_MT_EUCL;
+        options.hweight = 0;
+        options.breakingties = CN_SP_BT_GMAX;
+    }
 }
 
 void Mission::createSearch()

@@ -14,7 +14,6 @@ class Config
         double*         SearchParams;
         std::string*    LogParams;
         unsigned int    N;
-
 };
 
 #endif

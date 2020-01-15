@@ -1,9 +1,6 @@
 #include "search.h"
 
-Search::Search()
-{
-    hweight = 1;
-}
+Search::Search() {}
 
 Search::~Search() {}
 
@@ -18,14 +15,14 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     currentNode.j = map.getStartJ();
     currentNode.g = 0;
     currentNode.H = computeHeuristic(currentNode.i, currentNode.j, map.getGoalI(), map.getGoalJ(), options);
-    currentNode.F = currentNode.g + (hweight * currentNode.H);
+    currentNode.F = currentNode.g + (options.hweight * currentNode.H);
 
     OPEN.insert({currentNode.i + (currentNode.j * map.getMapHeight()), currentNode});
 
     bool pathFound = false;
 
     while (!(OPEN.empty())) {
-        currentNode = findMin();
+        currentNode = findMin(options);
 
         CLOSE.insert({currentNode.i + (currentNode.j * map.getMapHeight()), currentNode});
         OPEN.erase(currentNode.i + (currentNode.j * map.getMapHeight()));
@@ -71,7 +68,11 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
 {
     double H = 0.0;
 
-    if (options.metrictype == 0) {
+    if (options.searchtype < 2) {
+        return 0.0;
+    }
+
+    if (options.metrictype == CN_SP_MT_DIAG) {
         if (abs(a1 - a2) < abs(b1 - b2)) {
             H = (1.41421356237 * abs(a1 - a2)) + (abs(b1 - b2) - abs(a1 - a2));
         } else {
@@ -79,15 +80,15 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
         }
     }
 
-    if (options.metrictype == 1) {
+    if (options.metrictype == CN_SP_MT_MANH) {
         H = abs(a1 - a2) + abs(b1 - b2);
     }
 
-    if (options.metrictype == 2) {
+    if (options.metrictype == CN_SP_MT_EUCL) {
         H = sqrt((a1 - a2)*(a1 - a2) + (b1 - b2)*(b1 - b2));
     }
 
-    if (options.metrictype == 3) {
+    if (options.metrictype == CN_SP_MT_CHEB) {
         if (abs(a1 - a2) > abs(b1 - b2)) {
             H = abs(a1 - a2);
         } else {
@@ -102,15 +103,16 @@ std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const Env
 {
     std::list<Node> neighbors;
     Node neighbor;
-    bool noWay = false;
+    bool noWay;
 
     for (int down = -1; down < 2; ++down) {
         for (int right = -1; right < 2; ++right) {
+            noWay = false;
+
             if ((down != 0) || (right != 0)) {
 
                 if (map.CellOnGrid(currentNode.i + down, currentNode.j + right) &&
                     map.CellIsTraversable(currentNode.i + down, currentNode.j + right)) {
-
                     if ((down != 0) && (right != 0)) {
                         if ((map.CellIsObstacle(currentNode.i + down, currentNode.j)) &&
                             (map.CellIsObstacle(currentNode.i, currentNode.j + right)) &&
@@ -139,7 +141,7 @@ std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const Env
                             neighbor.g = currentNode.g + 1;
                         }
                         neighbor.H = computeHeuristic(neighbor.i, neighbor.j, map.getGoalI(), map.getGoalJ(), options);
-                        neighbor.F = neighbor.g + (hweight * neighbor.H);
+                        neighbor.F = neighbor.g + (options.hweight * neighbor.H);
 
                         neighbors.push_front(neighbor);
                     }
@@ -150,13 +152,23 @@ std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const Env
     return neighbors;
 }
 
-Node Search::findMin()
+Node Search::findMin(const EnvironmentOptions &options)
 {
     Node minNode;
     minNode = (OPEN.begin())->second;
     for (auto it = OPEN.begin(); it != OPEN.end(); ++it) {
         if (it->second.F < minNode.F) {
             minNode = it->second;
+        } else if (it->second.F == minNode.F) {
+            if (options.breakingties) {
+                if (it->second.g > minNode.g) {
+                    minNode = it->second;
+                }
+            } else {
+                if (it->second.g < minNode.g) {
+                    minNode = it->second;
+                }
+            }
         }
     }
     return minNode;
