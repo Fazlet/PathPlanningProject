@@ -38,16 +38,22 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
             if (OPEN.find(it->i + (it->j * map.getMapHeight())) == OPEN.end()) {
                 it->parent = &(CLOSE.find(currentNode.i + (map.getMapHeight() * currentNode.j))->second);
                 OPEN.insert({it->i + (it->j * map.getMapHeight()), *it});
-            } else if (it->g < OPEN[it->i + (it->j * map.getMapHeight())].g) {
-                OPEN[it->i + (it->j * map.getMapHeight())].g = it->g;
-                OPEN[it->i + (it->j * map.getMapHeight())].parent = &(CLOSE.find(currentNode.i + (map.getMapHeight() * currentNode.j))->second);
+            } else if ((it->F < OPEN[it->i + (it->j * map.getMapHeight())].F) ||
+                    ((it->F == OPEN[it->i + (it->j * map.getMapHeight())].F) &&
+                    (((options.breakingties) && (it->g >= OPEN[it->i + (it->j * map.getMapHeight())].g)) ||
+                    ((!(options.breakingties)) && (it->g <= OPEN[it->i + (it->j * map.getMapHeight())].g))))) {
+                    OPEN[it->i + (it->j * map.getMapHeight())].g = it->g;
+                    OPEN[it->i + (it->j * map.getMapHeight())].H = it->H;
+                    OPEN[it->i + (it->j * map.getMapHeight())].F = it->F;
+                    OPEN[it->i + (it->j * map.getMapHeight())].parent = &(CLOSE.find(
+                            currentNode.i + (map.getMapHeight() * currentNode.j))->second);
             }
         }
 
     }
 
-    makePrimaryPath(currentNode);
     sresult.pathlength = currentNode.g;
+    makePrimaryPath(currentNode);
 
     finish = std::chrono::system_clock::now();
     sresult.time = static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count()) / 1000000000;
@@ -161,11 +167,11 @@ Node Search::findMin(const EnvironmentOptions &options)
             minNode = it->second;
         } else if (it->second.F == minNode.F) {
             if (options.breakingties) {
-                if (it->second.g > minNode.g) {
+                if (it->second.g >= minNode.g) {
                     minNode = it->second;
                 }
             } else {
-                if (it->second.g < minNode.g) {
+                if (it->second.g <= minNode.g) {
                     minNode = it->second;
                 }
             }
