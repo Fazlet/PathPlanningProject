@@ -540,7 +540,7 @@
     </options>
     <log>
         <mapfilename>../Data/4_Mazes4_eu_gmax_ad_ncc.xml</mapfilename>
-        <summary numberofsteps="27233" nodescreated="27384" length="666.83051" length_scaled="3334.1525268554688" time="0.037054"/>
+        <summary numberofsteps="27283" nodescreated="27410" length="666.83051" length_scaled="3334.1525268554688" time="0.041102"/>
         <path/>
         <lplevel/>
         <hplevel/>
