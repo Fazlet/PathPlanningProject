@@ -49,8 +49,10 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                             currentNode.i + (map.getMapHeight() * currentNode.j))->second);
             }
         }
-
+        Logger->writeToLogOpenClose(OPEN, CLOSE, false);
     }
+
+    Logger->writeToLogOpenClose(OPEN, CLOSE, true);
 
     if (pathFound) {
         sresult.pathlength = currentNode.g;
