@@ -1,9 +1,9 @@
 #ifndef SEARCH_H
 #define SEARCH_H
 #include <chrono>
+#include <cmath>
 #include "environmentoptions.h"
 #include "ilogger.h"
-#include <math.h>
 #include <limits>
 #include <list>
 #include "searchresult.h"
@@ -25,15 +25,8 @@ class Search
         virtual void makePrimaryPath(Node currentNode);
         virtual void makeSecondaryPath();
 
-        /*
-        struct compare
-        {
-            bool operator()(const Node& one, const Node& two)
-            {
-                return one.F < two.F;
-            }
-        };
-        */
+        virtual bool lineOfSight(int a1, int b1, int a2, int b2, const Map &map, const EnvironmentOptions);
+        virtual Node changeParent(Node currentNode, Node parentNode, const Map &map, const EnvironmentOptions &options);
 
         SearchResult                                       sresult;
         std::list<Node>                                    lppath, hppath;

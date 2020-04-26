@@ -1,3 +1,4 @@
+#include <cmath>
 #include "search.h"
 
 Search::Search() {}
@@ -13,7 +14,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     currentNode.parent = nullptr;
     currentNode.i = map.getStartI();
     currentNode.j = map.getStartJ();
-    currentNode.g = 0;
+    currentNode.g = 0.0;
     currentNode.H = computeHeuristic(currentNode.i, currentNode.j, map.getGoalI(), map.getGoalJ(), options);
     currentNode.F = currentNode.g + (options.hweight * currentNode.H);
 
@@ -85,11 +86,7 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
     }
 
     if (options.metrictype == CN_SP_MT_DIAG) {
-        if (abs(a1 - a2) < abs(b1 - b2)) {
-            H = (1.41421356237 * abs(a1 - a2)) + (abs(b1 - b2) - abs(a1 - a2));
-        } else {
-            H = (1.41421356237 * abs(b1 - b2)) + (abs(a1 - a2) - abs(b1 - b2));
-        }
+        H = (std::min(abs(a1 - a2), abs(b1 - b2)) * sqrt(2)) + abs((abs(a1 - a2) - abs(b1 - b2)));
     }
 
     if (options.metrictype == CN_SP_MT_MANH) {
@@ -97,15 +94,11 @@ double Search::computeHeuristic(int a1, int b1, int a2, int b2, const Environmen
     }
 
     if (options.metrictype == CN_SP_MT_EUCL) {
-        H = sqrt((a1 - a2)*(a1 - a2) + (b1 - b2)*(b1 - b2));
+        H = sqrt((a1 - a2) * (a1 - a2) + (b1 - b2) * (b1 - b2));
     }
 
     if (options.metrictype == CN_SP_MT_CHEB) {
-        if (abs(a1 - a2) > abs(b1 - b2)) {
-            H = abs(a1 - a2);
-        } else {
-            H = abs(b1 - b2);
-        }
+        H = std::max(abs(a1 - a2), abs(b1 - b2));
     }
 
     return H;
@@ -148,9 +141,9 @@ std::list<Node> Search::getNeighbors(Node currentNode, const Map &map, const Env
                         neighbor.i = currentNode.i + down;
                         neighbor.j = currentNode.j + right;
                         if ((down != 0) && (right != 0)) {
-                            neighbor.g = currentNode.g + 1.41421356237;
+                            neighbor.g = currentNode.g + sqrt(2);
                         } else {
-                            neighbor.g = currentNode.g + 1;
+                            neighbor.g = currentNode.g + 1.0;
                         }
                         neighbor.H = computeHeuristic(neighbor.i, neighbor.j, map.getGoalI(), map.getGoalJ(), options);
                         neighbor.F = neighbor.g + (options.hweight * neighbor.H);
@@ -184,6 +177,26 @@ Node Search::findMin(const EnvironmentOptions &options)
         }
     }
     return minNode;
+}
+
+bool lineOfSight(int a1, int b1, int a2, int b2, const Map &map, const EnvironmentOptions) {
+    return false;
+}
+
+Node Search::changeParent(Node currentNode, Node parentNode, const Map &map, const EnvironmentOptions &options) {
+    if (options.searchtype == CN_SP_ST_TH) {
+        return currentNode;
+    }
+    if (parentNode.parent == nullptr) {
+        return currentNode;
+    }
+    if (lineOfSight(currentNode.i, currentNode.j, parentNode.parent->i, parentNode.parent->j, map, options)) {
+        currentNode.g = parentNode.parent->g +
+                sqrt(((currentNode.i - currentNode.j) * (currentNode.i - currentNode.j)) +
+                ((parentNode.parent->i - parentNode.parent->j) * (parentNode.parent->i - parentNode.parent->j)));
+        currentNode.parent = parentNode.parent;
+    }
+    return currentNode;
 }
 
 void Search::makePrimaryPath(Node currentNode)
