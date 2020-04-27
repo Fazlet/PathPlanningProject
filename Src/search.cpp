@@ -36,18 +36,17 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         std::list<Node> neighbors = getNeighbors(currentNode, map, options);
 
         for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
-            if (OPEN.find(it->i + (it->j * map.getMapHeight())) == OPEN.end()) {
+            if ((OPEN.find(it->i + (it->j * map.getMapHeight())) == OPEN.end()) ||
+                    ((it->F < OPEN[it->i + (it->j * map.getMapHeight())].F)
+                    || ((it->F == OPEN[it->i + (it->j * map.getMapHeight())].F)
+                    && (((options.breakingties) && (it->g >= OPEN[it->i + (it->j * map.getMapHeight())].g))
+                    || ((!(options.breakingties)) && (it->g <= OPEN[it->i + (it->j * map.getMapHeight())].g)))))) {
+
                 it->parent = &(CLOSE.find(currentNode.i + (map.getMapHeight() * currentNode.j))->second);
+                *it = changeParent(*it, *(it->parent), map, options);
+                OPEN.erase(it->i + (it->j * map.getMapHeight()));
                 OPEN.insert({it->i + (it->j * map.getMapHeight()), *it});
-            } else if ((it->F < OPEN[it->i + (it->j * map.getMapHeight())].F) ||
-                    ((it->F == OPEN[it->i + (it->j * map.getMapHeight())].F) &&
-                    (((options.breakingties) && (it->g >= OPEN[it->i + (it->j * map.getMapHeight())].g)) ||
-                    ((!(options.breakingties)) && (it->g <= OPEN[it->i + (it->j * map.getMapHeight())].g))))) {
-                    OPEN[it->i + (it->j * map.getMapHeight())].g = it->g;
-                    OPEN[it->i + (it->j * map.getMapHeight())].H = it->H;
-                    OPEN[it->i + (it->j * map.getMapHeight())].F = it->F;
-                    OPEN[it->i + (it->j * map.getMapHeight())].parent = &(CLOSE.find(
-                            currentNode.i + (map.getMapHeight() * currentNode.j))->second);
+
             }
         }
         Logger->writeToLogOpenClose(OPEN, CLOSE, false);
@@ -179,21 +178,80 @@ Node Search::findMin(const EnvironmentOptions &options)
     return minNode;
 }
 
-bool lineOfSight(int a1, int b1, int a2, int b2, const Map &map, const EnvironmentOptions) {
-    return false;
+bool Search::lineOfSight(int x1, int y1, int x2, int y2, const Map &map, const EnvironmentOptions &options) {
+    int deltax, deltay, signx, signy, error;
+
+    error = 0;
+    deltax = abs(x2 - x1);
+    deltay = abs(y2 - y1);
+    signx = (x1 < x2 ? 1 : -1);
+    signy = (y1 < y2 ? 1 : -1);
+
+    if (deltay >= deltax) {
+        while (y1 != y2) {
+
+            error += deltax;
+
+            if (error >= deltay) {
+                if (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2))) {
+                    return false;
+                }
+                x1 += signx;
+                error -= deltay;
+            }
+
+            if ((error != 0) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2)))) {
+                return false;
+            }
+
+            if ((deltax == 0) && (map.CellIsObstacle(x1, y1 + ((signy - 1) / 2))) && (map.CellIsObstacle(x1 - 1, y1 + ((signy - 1) / 2)))) {
+                return false;
+            }
+
+            y1 += signy;
+
+        }
+    } else {
+        while (x1 != x2) {
+
+            error += deltay;
+
+            if (error >= deltax) {
+                if (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2))) {
+                    return false;
+                }
+                y1 += signy;
+                error -= deltax;
+            }
+
+            if ((error != 0) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2)))) {
+                return false;
+            }
+
+            if ((deltay == 0) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1)) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 - 1))) {
+                return false;
+            }
+
+            x1 += signx;
+
+        }
+    }
+
+    return true;
 }
 
 Node Search::changeParent(Node currentNode, Node parentNode, const Map &map, const EnvironmentOptions &options) {
-    if (options.searchtype == CN_SP_ST_TH) {
+    if (options.searchtype != CN_SP_ST_TH) {
         return currentNode;
     }
-    if (parentNode.parent == nullptr) {
+    if ((parentNode.parent == nullptr) || ((currentNode.i == parentNode.parent->i) && (currentNode.j == parentNode.parent->j))) {
         return currentNode;
     }
-    if (lineOfSight(currentNode.i, currentNode.j, parentNode.parent->i, parentNode.parent->j, map, options)) {
+    if (lineOfSight(parentNode.parent->i, parentNode.parent->j, currentNode.i, currentNode.j, map, options)) {
         currentNode.g = parentNode.parent->g +
-                sqrt(((currentNode.i - currentNode.j) * (currentNode.i - currentNode.j)) +
-                ((parentNode.parent->i - parentNode.parent->j) * (parentNode.parent->i - parentNode.parent->j)));
+                sqrt(((currentNode.i - parentNode.parent->i) * (currentNode.i - parentNode.parent->i)) +
+                ((currentNode.j - parentNode.parent->j) * (currentNode.j - parentNode.parent->j)));
+        currentNode.F = currentNode.g + (options.hweight * currentNode.H);
         currentNode.parent = parentNode.parent;
     }
     return currentNode;
