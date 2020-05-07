@@ -179,64 +179,67 @@ Node Search::findMin(const EnvironmentOptions &options)
 }
 
 bool Search::lineOfSight(int x1, int y1, int x2, int y2, const Map &map, const EnvironmentOptions &options) {
-    int deltax, deltay, signx, signy, error;
+    int dx, dy, x_inc, y_inc, error, n, x, y;
 
-    error = 0;
-    deltax = abs(x2 - x1);
-    deltay = abs(y2 - y1);
-    signx = (x1 < x2 ? 1 : -1);
-    signy = (y1 < y2 ? 1 : -1);
+    dx = abs(x2 - x1);
+    dy = abs(y2 - y1);
+    x_inc = (x2 > x1 ? 1 : -1);
+    y_inc = (y2 > y1 ? 1 : -1);
+    n = dx + dy;
+    error = dx - dy;
+    x = x1;
+    y = y1;
+    dx *= 2;
+    dy *= 2;
 
-    if (deltay >= deltax) {
-        while (y1 != y2) {
-
-            error += deltax;
-
-            if (error >= deltay) {
-                if (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2))) {
-                    return false;
-                }
-                x1 += signx;
-                error -= deltay;
-            }
-
-            if ((error != 0) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2)))) {
+    if (dx == 0) {
+        for (; y != y2; y += y_inc) {
+            if (map.CellIsObstacle(x, y))
                 return false;
-            }
-
-            if ((deltax == 0) && (map.CellIsObstacle(x1, y1 + ((signy - 1) / 2))) && (map.CellIsObstacle(x1 - 1, y1 + ((signy - 1) / 2)))) {
-                return false;
-            }
-
-            y1 += signy;
-
         }
-    } else {
-        while (x1 != x2) {
-
-            error += deltay;
-
-            if (error >= deltax) {
-                if (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2))) {
-                    return false;
-                }
-                y1 += signy;
-                error -= deltax;
-            }
-
-            if ((error != 0) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 + ((signy - 1) / 2)))) {
+        return true;
+    } else if (dy == 0) {
+        for(; x != x2; x += x_inc) {
+            if (map.CellIsObstacle(x, y))
                 return false;
-            }
-
-            if ((deltay == 0) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1)) && (map.CellIsObstacle(x1 + ((signx - 1) / 2), y1 - 1))) {
-                return false;
-            }
-
-            x1 += signx;
-
         }
+        return true;
     }
 
+    if (true || options.cutcorners) {
+        while (n > 0) {
+            if (map.CellIsObstacle(x, y)) {
+                return false;
+            }
+            if (error > 0) {
+                x += x_inc;
+                error -= dy;
+            } else if (error < 0) {
+                y += y_inc;
+                error += dx;
+            } else if (error == 0) {
+                if (map.CellIsTraversable(x + x_inc, y)) {
+                    x += x_inc;
+                    error -= dy;
+                } else if (map.CellIsTraversable(x, y + y_inc)) {
+                    y += y_inc;
+                    error += dx;
+                } else if (options.allowsqueeze) {
+                    --n;
+                    x += x_inc;
+                    y += y_inc;
+                    error -= dy;
+                    error += dx;
+                } else {
+                    return false;
+                }
+            }
+            --n;
+        }
+        if (map.CellIsObstacle(x, y)) {
+            return false;
+        }
+    }
     return true;
 }
 
