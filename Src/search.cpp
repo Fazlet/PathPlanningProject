@@ -237,12 +237,6 @@ bool Search::lineOfSight(int x1, int y1, int x2, int y2, const Map &map, const E
             } else if (map.CellIsTraversable(x, y + y_inc)) {
                 y += y_inc;
                 error += dx;
-            } else if (options.allowsqueeze) {
-                --n;
-                x += x_inc;
-                y += y_inc;
-                error -= dy;
-                error += dx;
             } else {
                 return false;
             }
