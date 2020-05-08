@@ -179,7 +179,7 @@ Node Search::findMin(const EnvironmentOptions &options)
 }
 
 bool Search::lineOfSight(int x1, int y1, int x2, int y2, const Map &map, const EnvironmentOptions &options) {
-    int dx, dy, x_inc, y_inc, error, n, x, y;
+    int dx, dy, x_inc, y_inc, error, error0, n, x, y;
 
     dx = abs(x2 - x1);
     dy = abs(y2 - y1);
@@ -187,6 +187,7 @@ bool Search::lineOfSight(int x1, int y1, int x2, int y2, const Map &map, const E
     y_inc = (y2 > y1 ? 1 : -1);
     n = dx + dy;
     error = dx - dy;
+    error0 = error;
     x = x1;
     y = y1;
     dx *= 2;
@@ -206,40 +207,53 @@ bool Search::lineOfSight(int x1, int y1, int x2, int y2, const Map &map, const E
         return true;
     }
 
-    if (true || options.cutcorners) {
-        while (n > 0) {
-            if (map.CellIsObstacle(x, y)) {
-                return false;
-            }
-            if (error > 0) {
-                x += x_inc;
-                error -= dy;
-            } else if (error < 0) {
-                y += y_inc;
-                error += dx;
-            } else if (error == 0) {
-                if (map.CellIsTraversable(x + x_inc, y)) {
-                    x += x_inc;
-                    error -= dy;
-                } else if (map.CellIsTraversable(x, y + y_inc)) {
-                    y += y_inc;
-                    error += dx;
-                } else if (options.allowsqueeze) {
-                    --n;
-                    x += x_inc;
-                    y += y_inc;
-                    error -= dy;
-                    error += dx;
-                } else {
-                    return false;
-                }
-            }
-            --n;
-        }
+    while (n > 0) {
         if (map.CellIsObstacle(x, y)) {
             return false;
         }
+
+        if (error > 0) {
+            if ((!options.cutcorners) && ((error - dy) < error0)) {
+                if (map.CellIsObstacle(x, y + y_inc)) {
+                    return false;
+                }
+            }
+            x += x_inc;
+            error -= dy;
+
+        } else if (error < 0) {
+            if ((!options.cutcorners) && ((error + dx) > error0)) {
+                if (map.CellIsObstacle(x + x_inc, y)) {
+                    return false;
+                }
+            }
+            y += y_inc;
+            error += dx;
+
+        } else if (error == 0) {
+            if (map.CellIsTraversable(x + x_inc, y)) {
+                x += x_inc;
+                error -= dy;
+            } else if (map.CellIsTraversable(x, y + y_inc)) {
+                y += y_inc;
+                error += dx;
+            } else if (options.allowsqueeze) {
+                --n;
+                x += x_inc;
+                y += y_inc;
+                error -= dy;
+                error += dx;
+            } else {
+                return false;
+            }
+        }
+        --n;
     }
+
+    if (map.CellIsObstacle(x, y)) {
+        return false;
+    }
+
     return true;
 }
 
