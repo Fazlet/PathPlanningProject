@@ -52,7 +52,7 @@
     </options>
     <log>
         <mapfilename>../../Examples/theta_cutcorn_squeeze.xml</mapfilename>
-        <summary numberofsteps="62" nodescreated="104" length="15.358485" length_scaled="368.60364532470703" time="0.000133"/>
+        <summary numberofsteps="62" nodescreated="104" length="15.358485" length_scaled="368.60364532470703" time="0.000156"/>
         <path>
             <row number="0">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>

@@ -52,7 +52,7 @@
     </options>
     <log>
         <mapfilename>../../Examples/theta_nocutcorn_nosqueeze.xml</mapfilename>
-        <summary numberofsteps="384" nodescreated="424" length="29.818222" length_scaled="715.6373291015625" time="0.000749"/>
+        <summary numberofsteps="384" nodescreated="424" length="29.818222" length_scaled="715.6373291015625" time="0.000808"/>
         <path>
             <row number="0">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
