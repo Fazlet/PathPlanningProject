@@ -9,6 +9,8 @@
 #include "environmentoptions.h"
 #include "search.h"
 #include "xmllogger.h"
+#include <cairo/cairo.h>
+#include <cairo/cairo-pdf.h>
 
 class Mission
 {
@@ -25,6 +27,7 @@ class Mission
         void startSearch();
         void printSearchResultsToConsole();
         void saveSearchResultsToLog();
+        void printPathToPDF();
         SearchResult getSearchResult();
         
     private:

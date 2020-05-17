@@ -8,6 +8,8 @@ win32 {
 QMAKE_LFLAGS += -static -static-libgcc -static-libstdc++
 }
 
+INCLUDEPATH += /usr/include
+
 SOURCES += \
     config.cpp \
     environmentoptions.cpp \
