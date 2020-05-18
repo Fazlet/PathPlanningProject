@@ -511,7 +511,7 @@
         </grid>
     </map>
     <algorithm>
-        <metrictype>astar</metrictype>
+        <metrictype>euclid</metrictype>
         <searchtype>theta</searchtype>
         <hweight>1</hweight>
         <breakingties>g-max</breakingties>
